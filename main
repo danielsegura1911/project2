@@ -1,0 +1,151 @@
+#include <iostream>
+#include "med.h"
+#include "surgery.h" 
+
+using namespace std;
+char getMedicationTypeFromUser();
+char getSurgeryTypeFromUser();
+
+class PatientAccount {
+
+	double daily_rate;
+
+protected:
+
+	double charges;
+	int numberOfDays;
+
+public:
+
+	PatientAccount(int n) {
+		daily_rate = 200;
+		numberOfDays = n;
+		charges = 0;
+
+	}
+
+	void displayCharges() {
+
+		double total = numberOfDays * daily_rate + charges;
+
+		cout << "Total charges: " << total << endl;
+
+	}
+
+	friend class Surgery;
+	friend class Pharmacy;
+
+};
+
+class Surgery {
+
+	double HEART, APPENDIX, EYE, LIVER, BONE;
+
+public:
+
+	Surgery() {
+
+		HEART = 1000;
+		APPENDIX = 400;
+		EYE = 800;
+		LIVER = 900;
+		BONE = 700;
+
+	}
+
+	void setSurgeryCharges(PatientAccount &p, char type) {
+
+		if (type == 'A' || type == 'a') {
+			p.charges += HEART;
+		}
+		else if (type == 'B' || type == 'b') {
+			p.charges += APPENDIX;
+		}
+		else if (type == 'C' || type == 'c') {
+			p.charges += EYE;
+		}
+		else if (type == 'D' || type == 'd') {
+			p.charges += LIVER;
+		}
+		else if (type == 'E' || type == 'e') {
+			p.charges += BONE;
+		}
+		else {
+			cout << "Invalid Surgery type " << endl;
+		}
+	}
+};
+
+class Pharmacy {
+
+	double ANTIBIOTICS, ANTISEPTICS, ANALGESICS, ANTIVIRAL, ANTIFUNGALS;
+
+public:
+
+	Pharmacy() {
+		ANTIBIOTICS = 60;
+		ANTISEPTICS = 50;
+		ANALGESICS = 100;
+		ANTIVIRAL = 20;
+		ANTIFUNGALS = 10;
+
+	}
+
+
+
+	void setMedicationCharges(PatientAccount &p, char type) {
+
+		if (type == 'A' || type == 'a') {
+			p.charges += ANTIBIOTICS;
+		}
+		else if (type == 'B' || type == 'b') {
+			p.charges += ANTISEPTICS;
+		}
+		else if (type == 'C' || type == 'c') {
+			p.charges += ANALGESICS;
+		}
+		else if (type == 'D' || type == 'd') {
+			p.charges += ANTIVIRAL;
+		}
+		else if (type == 'E' || type == 'e') {
+			p.charges += ANTIFUNGALS;
+		}
+		else {
+			cout << "Invalid medication type " << endl;
+		}
+	}
+
+};
+
+int main() {
+	Surgery surgery;
+	Pharmacy pharmacy;
+
+	while (true) {
+
+		int days;
+		char surgeryType;
+		char medicationType;
+
+		cout << "Enter number of days spent: " << endl;
+
+		cin >> days;
+
+		PatientAccount patient(days);
+		surgeryType = getSurgeryTypeFromUser();
+		medicationType = getMedicationTypeFromUser();
+		surgery.setSurgeryCharges(patient, surgeryType);
+		pharmacy.setMedicationCharges(patient, medicationType);
+		patient.displayCharges();
+
+		cout << "Do you want to continue? y/n" << endl;
+		char choice;
+		cin >> choice;
+
+		if (choice != 'y') {
+			cout << "Bye..." << endl;
+			break;
+		}
+	}
+}
+
